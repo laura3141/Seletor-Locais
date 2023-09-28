@@ -105,12 +105,45 @@ public class App {
                 fileWriter.write(novoArquivo);
                 fileWriter.write("\n");
                 System.out.println("Dados foram atualizados com sucesso no arquivo.");
-            } catch (IOException e) {
+            } catch (IOException e) {   
                 e.printStackTrace();
             }
-            } catch (IOException e) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void exclui(String nome){
+        try (BufferedReader leitor = new BufferedReader(new FileReader("locais.txt"))) {
+            String linha;//guarda o conteudo da linha atual
+            String arquivo="";//concatena todas as linhas 
+            while ((linha = leitor.readLine()) != null) {
+
+                Scanner sc2=new Scanner(linha);
+                sc2.useDelimiter(",");
+                int c=0;
+                String nm="";
+                while(sc2.hasNext()){
+                    String aux=sc2.next();//parte a linha entre as virgulas
+                    if(c==1){// se for o atributo nome
+                        nm=aux;
+                        break;
+                    }
+                    c++;
+                }
+                if (!nm.equals(nome)){
+                    arquivo+=linha+"\n";
+                }
+            }
+           
+            try (FileWriter fileWriter = new FileWriter("locais.txt")) {
+                fileWriter.write(arquivo);
+                System.out.println("Local excluido com sucesso.");
+            } catch (IOException e) {   
                 e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void escreveArquivo(String str){
@@ -136,20 +169,24 @@ public class App {
                 switch (opcao){
                     case 0:
                         System.out.println("Até a próxima! \2 ");
-                        break;
+                            break;
                     case 1:
                         escreveArquivo(le());
-                        break;
+                            break;
 
                     case 2:
                         System.out.print("Digite o nome do local que voce quer marcar como visitado: ");
                         scanner.nextLine();
                         nome=scanner.nextLine();
                         marcaVisita(nome);
-
+                            break;
                     case 3:
+                        System.out.print("Digite o nome do local que voce quer marcar como visitado: ");
+                        scanner.nextLine();
+                        nome=scanner.nextLine();
+                        exclui(nome);
 
-                        break;
+                             break;
                         
                 }
             }

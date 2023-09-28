@@ -1,5 +1,21 @@
-3,American Day,1,NAO,BOSAM,
-0,Sava,2,NAO,NOITE,
+3,American Day,1,NAO,AMBOS,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
