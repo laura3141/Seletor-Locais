@@ -1,21 +1,2 @@
-3,American Day,1,NAO,AMBOS,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+CODIGO,NOME,PRECO,INEDITO,TURNO
+3,NUUVEM,2,SIM,DIA
