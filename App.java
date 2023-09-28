@@ -1,9 +1,4 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Scanner;
 
 public class App {
@@ -178,6 +173,33 @@ public class App {
             e.printStackTrace();
         }
     }
+
+    public static void contaPontos(String preferencia){
+          try (BufferedReader leitor = new BufferedReader(new FileReader("locais.txt"))) {
+            String linha;
+            String[]atributos=new String[5];
+            int[]pontuacao=new int[20];
+            
+            int qtLinha=0;
+            while ((linha = leitor.readLine()) != null) {
+                int pontos=0;
+                Scanner sc2=new Scanner(linha);
+                Scanner sc3=new Scanner(preferencia);
+                sc2.useDelimiter(",");
+                qtLinha++;
+                while(sc2.hasNext()){
+                    String aux=sc2.next();//parte a linha entre as virgulas
+                    String aux2=sc3.next();
+                    if(aux.equals(aux2))pontos++;
+                }
+                pontuacao[qtLinha]=pontos;
+            }
+            leitor.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+    }
+    
     
 
     public static void main(String[] args) {
