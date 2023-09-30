@@ -1,9 +1,12 @@
 import java.io.*;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.Scanner;
 
 public class App {
     static Scanner scanner=new Scanner(System.in);
-
+    static String arrayLocais[]=new String[100];
+    static int qtLocais=0;
     //Método para exibir o menu inicial
     public static int menu(){
         int op; 
@@ -173,35 +176,75 @@ public class App {
             e.printStackTrace();
         }
     }
-
-    public static void contaPontos(String preferencia){
-          try (BufferedReader leitor = new BufferedReader(new FileReader("locais.txt"))) {
+    public static void criaArray(String preferencia){
+        try (BufferedReader leitor = new BufferedReader(new FileReader("locais.txt"))) {
             String linha;
-            String[]atributos=new String[5];
-            int[]pontuacao=new int[20];
-            
-            int qtLinha=0;
             while ((linha = leitor.readLine()) != null) {
-                int pontos=0;
-                Scanner sc2=new Scanner(linha);
-                Scanner sc3=new Scanner(preferencia);
-                sc2.useDelimiter(",");
-                qtLinha++;
-                while(sc2.hasNext()){
-                    String aux=sc2.next();//parte a linha entre as virgulas
-                    String aux2=sc3.next();
-                    if(aux.equals(aux2))pontos++;
-                }
-                pontuacao[qtLinha]=pontos;
+                arrayLocais[qtLocais]=linha;
+                qtLocais++;
             }
             leitor.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } 
+        }
+        contaPontos(preferencia);
+    }
+
+    public static void contaPontos(String preferencia){
+            int pontuacaoCadaLinha []=new int[100];
+        
+            Scanner sc3=new Scanner(preferencia);
+            for(int i=0;i<qtLocais;i++){
+                int pontos=0;
+                Scanner sc2=new Scanner(arrayLocais[i]);
+                 System.out.println("-----");
+                System.out.println(arrayLocais[i]);
+                System.out.println(preferencia);
+                 System.out.println("-----");
+                sc2.useDelimiter(",");
+                sc3.useDelimiter(",");
+                
+                while(sc2.hasNext()&&sc3.hasNext()){
+                    String aux=sc2.next();
+                    String aux2=sc3.next();
+                    System.out.println(i+aux);
+                    System.out.println(i+aux2);
+                    /*if(aux.equals(aux2)){
+                        System.out.println("-----");
+                        
+                         System.out.println("-----");
+                        pontos++;
+                    }*/
+                }
+                pontuacaoCadaLinha[i]=pontos;
+            }
+        selecionaLocal(pontuacaoCadaLinha);
+    }
+    public static void selecionaLocal(int []pontuacao){
+        int posiçoes[]=new int[100];
+        int locaisCandidatos=0;
+        int atributosIguais=4;
+        while(locaisCandidatos==0&&atributosIguais>0){
+            for(int i=0;i<qtLocais;i++){
+                if(pontuacao[i]==atributosIguais){
+                    posiçoes[locaisCandidatos]=i;
+                    locaisCandidatos++;
+                }
+            }
+            if(locaisCandidatos==0)atributosIguais--;
+        }
+        if(locaisCandidatos>0){
+            Random gerador = new Random();
+            gerador.setSeed(System.nanoTime());
+            int a,b;
+            a=(((Math.abs(gerador.nextInt()) %locaisCandidatos)));
+            b=pontuacao[a];
+            System.out.println("O local selecionado foi: ");
+            System.out.println(arrayLocais[b]);
+        }
+        else System.out.println("Sem opcoes disponíveis !"); 
     }
     
-    
-
     public static void main(String[] args) {
         
         int opcao;
@@ -225,8 +268,9 @@ public class App {
                         marcaVisita(nomeU);
                             break;
                     case 3:
-                        
-                             break;
+                        String preferencia=le();
+                        criaArray(preferencia);
+                            break;
                     case 4:
                         System.out.print("Digite o nome do local que voce deseja excluir: ");
                         scanner.nextLine();
